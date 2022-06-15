@@ -1,0 +1,115 @@
+.Login {
+    display: flex;
+    align-items: center;
+    .container {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+
+        .titlebox {
+            padding: 20px;
+            padding-top: 100px;
+            width: 800px;
+            color: white;
+            text-align: center;
+            .title {
+                font-size: 70pt;
+                font-weight: 800;
+                text-shadow: 6px 0px gray;
+            }
+            .subtitle {
+                margin-top: 10px;
+                font-size: 20pt;
+                font-weight: 700;
+            }
+            .descriptionbox {
+                margin-top: 30px;
+                .desc {
+                    margin-top: 8px;
+                }
+                margin-bottom: 20px;
+            }
+        }
+
+        .loginbox {
+            background-color: rgb(245, 245, 245);
+            width: 450px;
+            min-height: 500px;
+            border-radius: 40px;
+            border: 1px solid gray;
+            box-shadow: 10px 0px gray;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .login {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .title {
+                    font-size: 15pt;
+                    font-weight: 700;
+                    color: #1e1e1e;
+                    margin-bottom: 10px;
+                }
+            }
+
+            hr {
+                width: 300px;
+                margin: 40px;
+            }
+
+            .email.login {
+                margin-top: 50px;
+                input {
+                    width: 300px;
+                    height: 25px;
+                    padding: 10px;
+                    font-size: 15px;
+                    border: 1px solid gray;
+                    border-radius: 5px;
+                    margin-top: 10px;
+                }
+                button {
+                    width: 322px;
+                    height: 35px;
+                    font-size: 15px;
+                    font-weight: 700;
+                    border: 0px;
+                    background-color: #1e1e1e;
+                    border-radius: 5px;
+                    margin-top: 10px;
+                    color: white;
+                }
+            }
+
+            .social.login {
+                margin-bottom: 40px;
+                button {
+                    width: 322px;
+                    height: 40px;
+                    font-size: 15px;
+                    font-weight: 700;
+                    border: 0px;
+                    background-color: #1e1e1e;
+                    border-radius: 5px;
+                    margin-top: 10px;
+                    color: white;
+                }
+                button.kakao {
+                    background-color: #fee500;
+                    color: rgb(37, 42, 45);
+                }
+                button.google {
+                    background-color: rgb(79, 115, 242);
+                    color: white;
+                }
+                button.github {
+                    background-color: #383838;
+                    color: white;
+                }
+            }
+        }
+    }
+}
