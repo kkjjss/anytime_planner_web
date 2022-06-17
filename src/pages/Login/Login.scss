@@ -42,6 +42,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-bottom: 50px;
 
             .login {
                 display: flex;
@@ -51,7 +52,7 @@
                     font-size: 15pt;
                     font-weight: 700;
                     color: #1e1e1e;
-                    margin-bottom: 10px;
+                    margin-bottom: 20px;
                 }
             }
 
@@ -62,15 +63,65 @@
 
             .email.login {
                 margin-top: 50px;
-                input {
-                    width: 300px;
-                    height: 25px;
-                    padding: 10px;
-                    font-size: 15px;
-                    border: 1px solid gray;
-                    border-radius: 5px;
-                    margin-top: 10px;
+
+                .inputbox {
+                    position: relative;
+
+                    input {
+                        background-color: rgb(245, 245, 245);
+                        width: 300px;
+                        padding: 10px;
+                        font-size: 17px;
+                        border: 1px solid gray;
+                        border-radius: 5px;
+                        outline: none;
+                        margin-bottom: 15px;
+                        transition: 0.5s;
+                    }
+
+                    span {
+                        position: absolute;
+                        left: 0;
+                        padding: 10px;
+                        font-size: 17px;
+                        transition: 0.5s;
+                        pointer-events: none;
+                    }
+
+                    // input::placeholder {
+                    //     color: rgb(245, 245, 245);
+                    //     transition-delay: 0.25s;
+                    //     transition: 0.25s;
+                    // }
+
+                    input:focus {
+                        border: 1px solid rgba(0, 0, 255, 0.8);
+                    }
+
+                    input:focus ~ span,
+                    input:valid ~ span {
+                        color: rgb(0, 0, 255);
+                        transform: translateX(10px) translateY(-10px);
+                        background-color: rgb(245, 245, 245);
+                        padding: 0;
+                        padding-left: 5px;
+                        padding-right: 5px;
+                        border-left: 1px solid blue;
+                        border-right: 1px solid blue;
+                        font-size: 15px;
+                    }
+
+                    input:not(:focus):valid ~ span {
+                        color: #1e1e1e;
+                        border-left: 1px solid gray;
+                        border-right: 1px solid gray;
+                    }
+
+                    // input:focus::placeholder {
+                    //     color: gray;
+                    // }
                 }
+
                 button {
                     width: 322px;
                     height: 35px;
@@ -79,7 +130,6 @@
                     border: 0px;
                     background-color: #1e1e1e;
                     border-radius: 5px;
-                    margin-top: 10px;
                     color: white;
                 }
             }
