@@ -1,10 +1,10 @@
 import React from "react";
-import "./Login.scss";
+import "./Auth.scss";
 import logo from "../../assets/logo.png";
 
 export default function Login() {
     return (
-        <div className="Login">
+        <div className="Auth">
             <div className="container">
                 <div className="titlebox">
                     <div className="title">
@@ -27,7 +27,7 @@ export default function Login() {
                             <span>이메일</span>
                         </div>
                         <div className="inputbox">
-                            <input className="password" type="text"required/>
+                            <input className="password" type="password" required/>
                             <span>비밀번호</span>
                         </div>
 

@@ -1,13 +1,11 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
+import Auth from "./pages/Auth/Auth";
 
-export default function Root() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+export default function Root({ isLoggedIn }: types.RootProps) {
     function AuthRouter({ children }: types.AuthRouterProps): JSX.Element {
-        return isLoggedIn ? children : <Navigate to="/login" />;
+        return isLoggedIn ? children : <Navigate to="/auth" />;
     }
 
     return (
@@ -16,7 +14,7 @@ export default function Root() {
                 <Route path="/" element={<Home />} />
             </Routes> */}
             <Routes>
-                <Route path="/login" element={<Login />} />
+                <Route path="/auth" element={<Auth />} />
                 <Route
                     path="/"
                     element={
@@ -35,5 +33,9 @@ export default function Root() {
 declare module types {
     interface AuthRouterProps {
         children: JSX.Element;
+    }
+
+    interface RootProps {
+        isLoggedIn: boolean;
     }
 }
