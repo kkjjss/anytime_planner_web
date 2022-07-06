@@ -1,11 +1,10 @@
 import React from "react";
 import Root from "./Router";
 import { useState } from "react";
-import firebase from "./firebase.config";
+import { auth } from "./firebase.config";
 
 function App() {
-    const auth = firebase.auth();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(auth.currentUser);
 
     return (
         <div className="App">
