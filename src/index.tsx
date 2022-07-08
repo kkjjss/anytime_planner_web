@@ -1,11 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.scss";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import firebase from "./firebase.config";
-
-console.log(firebase);
+import "index.scss";
+import App from "App";
+import reportWebVitals from "reportWebVitals";
+import firebase from "firebaseConfig";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(

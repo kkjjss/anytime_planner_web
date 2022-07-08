@@ -1,7 +1,7 @@
 // import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/Home/Home";
-import Auth from "./pages/Auth/Auth";
+import Home from "pages/Home/Home";
+import Auth from "pages/Auth/Auth";
 import { User } from "@firebase/auth";
 
 export default function Root({ isLoggedIn }: types.RootProps) {

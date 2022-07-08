@@ -9,7 +9,7 @@
 
         .titlebox {
             padding: 20px;
-            padding-top: 100px;
+            padding-top: 50px;
             width: 800px;
             color: white;
             text-align: center;
@@ -58,7 +58,7 @@
 
             hr {
                 width: 300px;
-                margin: 40px;
+                // margin: 40px;
             }
 
             .email.login {
@@ -132,6 +132,20 @@
                     background-color: #1e1e1e;
                     border-radius: 5px;
                     color: white;
+
+                    input {
+                        border: none;
+                        background-color: #1e1e1e;
+                        font-size: 15px;
+                        font-weight: 700;
+                        color: white;
+                    }
+                }
+
+                .join {
+                    margin-top: 3px;
+                    color: #1e1e1e;
+                    font-size: 15px;
                 }
             }
 
@@ -148,10 +162,10 @@
                     margin-top: 10px;
                     color: white;
                 }
-                button.kakao {
-                    background-color: #fee500;
-                    color: rgb(37, 42, 45);
-                }
+                // button.kakao {
+                //     background-color: #fee500;
+                //     color: rgb(37, 42, 45);
+                // }
                 button.google {
                     background-color: rgb(79, 115, 242);
                     color: white;
