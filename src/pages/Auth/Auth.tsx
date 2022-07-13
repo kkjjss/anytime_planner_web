@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./Auth.scss";
 import logo from "../../assets/logo.png";
+import SignUpModal from "componenets/modals/SignUp";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [open, setOpen] = useState(false);
+    const [close, setClose] = useState(true);
+
+    const outContent = useRef<HTMLDivElement | null>(null);
 
     const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -20,8 +25,14 @@ export default function Login() {
         // throw new Error("!!");
     };
 
+    const onClickSignUp = (event: React.MouseEvent<HTMLSpanElement>) => {
+        setOpen(!open);
+        setClose(!close);
+    };
+
     return (
         <div className="Auth">
+            {open && !close ? SignUpModal({ open, close, header: "SignUp", onClickSignUp, outContent }) : <></>}
             <div className="container">
                 <div className="titlebox">
                     <div className="title">
@@ -54,7 +65,9 @@ export default function Login() {
                             </button>
                         </div>
                     </form>
-                    <span className="join">회원가입</span>
+                    <span className="join" onClick={onClickSignUp}>
+                        회원가입
+                    </span>
 
                     <hr />
                     <div className="social login">
