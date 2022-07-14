@@ -13,22 +13,18 @@
             width: 800px;
             color: white;
             text-align: center;
-            .title {
-                font-size: 70pt;
-                font-weight: 800;
-                text-shadow: 6px 0px gray;
-            }
+            
             .subtitle {
                 margin-top: 10px;
                 font-size: 20pt;
                 font-weight: 700;
             }
             .descriptionbox {
-                margin-top: 30px;
+                margin-top: 10px;
                 .desc {
                     margin-top: 8px;
                 }
-                margin-bottom: 20px;
+                margin-bottom: 0px;
             }
         }
 

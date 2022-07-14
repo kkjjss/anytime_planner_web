@@ -45,6 +45,6 @@ declare module types {
     }
 
     interface RootProps {
-        isLoggedIn: User | null;
+        isLoggedIn: boolean;
     }
 }

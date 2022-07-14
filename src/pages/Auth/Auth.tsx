@@ -2,14 +2,17 @@ import React, { useRef, useState } from "react";
 import "./Auth.scss";
 import logo from "../../assets/logo.png";
 import SignUpModal from "componenets/modals/SignUp";
+import { sign } from "crypto";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { authService } from "firebaseConfig";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [open, setOpen] = useState(false);
-    const [close, setClose] = useState(true);
+    const [signUp, setSignUpOpen] = useState(false);
+    // const [error, setError] = useState("")
 
-    const outContent = useRef<HTMLDivElement | null>(null);
+    const outModal = useRef<HTMLDivElement | null>(null);
 
     const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -19,20 +22,26 @@ export default function Login() {
         setPassword(event.target.value);
     };
 
-    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         //Event 인터페이스의 preventDefault() 메서드는 어떤 이벤트를 명시적으로 처리하지 않은 경우, 해당 이벤트에 대한 사용자 에이전트의 기본 동작을 실행하지 않도록 지정합니다.
         event.preventDefault();
-        // throw new Error("!!");
+
+        //로그인
+        try {
+            const data = await signInWithEmailAndPassword(authService, email, password);
+        } catch (error) {
+            alert(error);
+            console.error(error);
+        }
     };
 
-    const onClickSignUp = (event: React.MouseEvent<HTMLSpanElement>) => {
-        setOpen(!open);
-        setClose(!close);
+    const toggleSignUp = (/* event: React.MouseEvent<HTMLSpanElement> */) => {
+        setSignUpOpen(!signUp);
     };
 
     return (
         <div className="Auth">
-            {open && !close ? SignUpModal({ open, close, header: "SignUp", onClickSignUp, outContent }) : <></>}
+            {signUp ? <SignUpModal signUp={signUp} toggleSignUp={toggleSignUp} outModal={outModal} /> : <></>}
             <div className="container">
                 <div className="titlebox">
                     <div className="title">
@@ -65,7 +74,7 @@ export default function Login() {
                             </button>
                         </div>
                     </form>
-                    <span className="join" onClick={onClickSignUp}>
+                    <span className="join" onClick={toggleSignUp}>
                         회원가입
                     </span>
 
