@@ -2,14 +2,12 @@ import React, { useRef, useState } from "react";
 import "./Auth.scss";
 import logo from "../../assets/logo.png";
 import SignUpModal from "componenets/modals/SignUp";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { authService, githubAuthProvider, googleAuthProvider } from "firebaseConfig";
+import { auth, authInstance, githubAuthProvider, googleAuthProvider } from "firebaseConfig";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [signUp, setSignUpOpen] = useState(false);
-    // const [error, setError] = useState("")
 
     const outModal = useRef<HTMLDivElement | null>(null);
 
@@ -27,7 +25,8 @@ export default function Login() {
 
         //로그인
         try {
-            const data = await signInWithEmailAndPassword(authService, email, password);
+            const data = await authInstance.signInWithEmailAndPassword(auth, email, password);
+            console.log(data);
         } catch (error) {
             alert(error);
             console.error(error);
@@ -43,7 +42,7 @@ export default function Login() {
         if (event.currentTarget.name === "github") provider = githubAuthProvider; // github
 
         try {
-            const data = await signInWithPopup(authService, provider);
+            const data = await authInstance.signInWithPopup(auth, provider);
             console.log(data);
         } catch (error) {
             alert(error);

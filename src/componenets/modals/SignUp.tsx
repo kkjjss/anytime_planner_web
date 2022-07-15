@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import "./SignUp.scss";
-import { authService } from "firebaseConfig";
-import { async } from "@firebase/util";
+import { auth, authInstance } from "firebaseConfig";
 
 export function SignUp(props: any) {
     // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
@@ -38,7 +36,7 @@ export function SignUp(props: any) {
         } else {
             try {
                 //계정 생성
-                const data = await createUserWithEmailAndPassword(authService, email, password);
+                const data = await authInstance.createUserWithEmailAndPassword(auth, email, password);
 
                 console.log(data);
 

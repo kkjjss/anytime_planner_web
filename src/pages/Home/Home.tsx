@@ -1,12 +1,11 @@
 import React from "react";
 import "./Home.scss";
 import logo from "../../assets/logo.png";
-import { signOut } from "firebase/auth";
-import { authService } from "firebaseConfig";
+import { auth, authInstance } from "firebaseConfig";
 
 export default function Home() {
     async function logout(){
-        const data = await signOut(authService);
+        const data = await authInstance.signOut(auth);
         console.log(data);
     }
     return (
