@@ -2,9 +2,8 @@ import React, { useRef, useState } from "react";
 import "./Auth.scss";
 import logo from "../../assets/logo.png";
 import SignUpModal from "componenets/modals/SignUp";
-import { sign } from "crypto";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { authService } from "firebaseConfig";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { authService, githubAuthProvider, googleAuthProvider } from "firebaseConfig";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -22,7 +21,7 @@ export default function Login() {
         setPassword(event.target.value);
     };
 
-    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const signInWithEmail = async (event: React.FormEvent<HTMLFormElement>) => {
         //Event 인터페이스의 preventDefault() 메서드는 어떤 이벤트를 명시적으로 처리하지 않은 경우, 해당 이벤트에 대한 사용자 에이전트의 기본 동작을 실행하지 않도록 지정합니다.
         event.preventDefault();
 
@@ -37,6 +36,19 @@ export default function Login() {
 
     const toggleSignUp = (/* event: React.MouseEvent<HTMLSpanElement> */) => {
         setSignUpOpen(!signUp);
+    };
+
+    const signInWithSocial = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        let provider = googleAuthProvider; // google
+        if (event.currentTarget.name === "github") provider = githubAuthProvider; // github
+
+        try {
+            const data = await signInWithPopup(authService, provider);
+            console.log(data);
+        } catch (error) {
+            alert(error);
+            console.log(error);
+        }
     };
 
     return (
@@ -57,7 +69,7 @@ export default function Login() {
                     </div>
                 </div>
                 <div className="loginbox">
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={signInWithEmail}>
                         <div className="email login">
                             <div className="title">이메일 아이디로 로그인하기</div>
                             <div className="inputbox">
@@ -82,8 +94,12 @@ export default function Login() {
                     <div className="social login">
                         <div className="title">소셜 아이디로 로그인하기</div>
                         {/* <button className="kakao">카카오로 계속하기</button> */}
-                        <button className="google">구글로 계속하기</button>
-                        <button className="github">깃허브로 계속하기</button>
+                        <button className="google" onClick={signInWithSocial} name="google">
+                            구글로 계속하기
+                        </button>
+                        <button className="github" onClick={signInWithSocial} name="github">
+                            깃허브로 계속하기
+                        </button>
                     </div>
                 </div>
             </div>
