@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Auth.scss";
 import logo from "../../assets/logo.png";
 import SignUpModal from "componenets/modals/SignUp";
@@ -26,7 +26,6 @@ export default function Login() {
         //로그인
         try {
             const data = await authInstance.signInWithEmailAndPassword(auth, email, password);
-            console.log(data);
         } catch (error) {
             alert(error);
             console.error(error);

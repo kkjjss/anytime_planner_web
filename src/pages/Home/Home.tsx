@@ -6,7 +6,6 @@ import { auth, authInstance } from "firebaseConfig";
 export default function Home() {
     async function logout(){
         const data = await authInstance.signOut(auth);
-        console.log(data);
     }
     return (
         <div className="Login">
