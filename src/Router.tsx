@@ -1,13 +1,12 @@
-// import { useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, /* Navigate */ } from "react-router-dom";
 import Home from "pages/Home/Home";
 import Auth from "pages/Auth/Auth";
-import { User } from "@firebase/auth";
+import Header from "componenets/header/Header";
 
-export default function Root({ isLoggedIn }: types.RootProps) {
-    function AuthRouter({ children }: types.AuthRouterProps): JSX.Element {
-        return true ? children : <Navigate to="/auth" />;
-    }
+export default function Root({ isLoggedIn }: Root.RootProps) {
+    // function AuthRouter({ children }: types.AuthRouterProps): JSX.Element {
+    //     return true ? children : <Navigate to="/auth" />;
+    // }
 
     return (
         <BrowserRouter>
@@ -28,9 +27,12 @@ export default function Root({ isLoggedIn }: types.RootProps) {
 
             <Routes>
                 {isLoggedIn ? (
-                    <>
-                        <Route path="/" element={<Home />} />
-                    </>
+                    <Route path="/" element={
+                        <>
+                            <Header />
+                            <Home />
+                        </>} 
+                    />
                 ) : (
                     <Route path="/" element={<Auth />} />
                 )}
@@ -39,7 +41,7 @@ export default function Root({ isLoggedIn }: types.RootProps) {
     );
 }
 
-declare module types {
+declare module Root {
     interface AuthRouterProps {
         children: JSX.Element;
     }
