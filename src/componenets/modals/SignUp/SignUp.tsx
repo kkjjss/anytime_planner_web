@@ -4,8 +4,7 @@ import { auth, authInstance } from "firebaseConfig";
 import { updateProfile } from "firebase/auth";
 
 export function SignUp(props: any) {
-    // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
-    const { signUp, toggleSignUp, outModal } = props;
+    const { signUpOpen, toggleSignUp, outModal } = props;
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -60,7 +59,7 @@ export function SignUp(props: any) {
     return (
         // 모달이 열릴때 openModal 클래스가 생성된다.
         <div
-            className={signUp ? "openModal modal" : "modal"}
+            className={signUpOpen ? "openModal modal" : "modal"}
             ref={outModal}
             onClick={(e) => {
                 if (outModal.current === e.target) {

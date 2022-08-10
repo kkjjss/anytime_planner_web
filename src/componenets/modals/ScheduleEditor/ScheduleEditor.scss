@@ -1,0 +1,164 @@
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    button {
+        outline: none;
+        cursor: pointer;
+        border: 0;
+    }
+
+    section {
+        width: 90%;
+        max-width: 450px;
+        margin: 0 auto;
+        border-radius: 0.3rem;
+        background-color: #fff;
+        /* 팝업이 열릴때 스르륵 열리는 효과 */
+        animation: modal-show 0.3s;
+        overflow: hidden;
+
+        header {
+            position: relative;
+
+            button {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                width: 30px;
+                font-size: 21px;
+                font-weight: 700;
+                text-align: center;
+                color: #999;
+                background-color: transparent;
+            }
+        }
+
+        main {
+            padding: 16px;
+
+            .signupbox {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 20px;
+                margin-bottom: 20px;
+
+                .title {
+                    font-size: 15pt;
+                    font-weight: 700;
+                    color: #1e1e1e;
+                    margin-bottom: 20px;
+                    text-align: center;
+                }
+
+                .inputbox {
+                    position: relative;
+
+                    input {
+                        background-color: rgb(245, 245, 245);
+                        width: 300px;
+                        padding: 10px;
+                        font-size: 17px;
+                        border: 1px solid gray;
+                        border-radius: 5px;
+                        outline: none;
+                        margin-bottom: 15px;
+                        transition: 0.25s;
+                    }
+
+                    input:focus {
+                        border: 1px solid rgba(0, 0, 255, 0.8);
+                    }
+                }
+
+                .selectBox {
+                    display: flex;
+                    height: 40px;
+                    align-items: center;
+                    margin-bottom: 15px;
+
+                    div {
+                        width: 100px;
+                        font-size: 17px;
+                    }
+                    
+                    select {
+                        background-color: rgb(245, 245, 245);
+                        border: 1px solid gray;
+                        border-radius: 5px;
+                        outline: none;
+                        width: 222px;
+                        height: 40px;
+                        font-size: 15px;
+                        padding-left: 5px;
+                        transition: 0.25s;
+                    }
+
+                    input[type=date]{
+                        padding-left: 5px;
+                        width: 215px;
+                        height: 40px;
+                        font-size: 15px;
+                        border-width: 1px;
+                    }
+
+                    select:focus {
+                        border: 1px solid rgba(0, 0, 255, 0.8);
+                    }
+                }
+
+                button {
+                    width: 322px;
+                    height: 35px;
+                    font-size: 15px;
+                    font-weight: 700;
+                    border: 0px;
+                    background-color: #1e1e1e;
+                    border-radius: 5px;
+                    color: white;
+
+                    input {
+                        border: none;
+                        background-color: #1e1e1e;
+                        font-size: 15px;
+                        font-weight: 700;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.modal.openModal {
+    display: flex;
+    align-items: center;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-bg-show 0.3s;
+}
+
+@keyframes modal-show {
+    from {
+        opacity: 0;
+        margin-top: -50px;
+    }
+    to {
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+@keyframes modal-bg-show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

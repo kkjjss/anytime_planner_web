@@ -1,13 +1,13 @@
 import React, { /* useEffect, */ useRef, useState } from "react";
 import "./Auth.scss";
 import logo from "../../assets/logo.png";
-import SignUpModal from "componenets/modals/SignUp";
+import SignUpModal from "componenets/modals/SignUp/SignUp";
 import { auth, authInstance, githubAuthProvider, googleAuthProvider } from "firebaseConfig";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [signUp, setSignUpOpen] = useState(false);
+    const [signUpOpen, setSignUpOpen] = useState(false);
 
     const outModal = useRef<HTMLDivElement | null>(null);
 
@@ -33,7 +33,7 @@ export default function Login() {
     };
 
     const toggleSignUp = (/* event: React.MouseEvent<HTMLSpanElement> */) => {
-        setSignUpOpen(!signUp);
+        setSignUpOpen(!signUpOpen);
     };
 
     const signInWithSocial = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -51,7 +51,7 @@ export default function Login() {
 
     return (
         <div className="Auth">
-            {signUp ? <SignUpModal signUp={signUp} toggleSignUp={toggleSignUp} outModal={outModal} /> : <></>}
+            {signUpOpen ? <SignUpModal signUpOpen={signUpOpen} toggleSignUp={toggleSignUp} outModal={outModal} /> : <></>}
             <div className="container">
                 <div className="titlebox">
                     <div className="title">
