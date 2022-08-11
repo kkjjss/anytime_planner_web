@@ -11,8 +11,9 @@ export default function Editor(props: any) {
     const [startdate, setStartdate] = useState(yyyymmdd(new Date()));
     const [enddate, setEnddate] = useState(yyyymmdd(new Date()));
     const [period, setPeriod] = useState("");
-    const [daytype, setDaytype] = useState("");
-
+    const [daytype, setDaytype] = useState("oneday");
+    const [selectedDays, setSelectedDays] = useState({ mon: "", tue: "", wed: "", thur: "", fri: "", sat: "", sun: "" });
+    const [monday, setMonday] = useState("selected");
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         databaseInstance.addDoc(databaseInstance.collection(database, "text"), { text: text }).then(() => alert("저장완료"));
@@ -44,13 +45,29 @@ export default function Editor(props: any) {
         }
     };
 
+    const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        switch (event.currentTarget.name) {
+            case "oneday":
+            case "duration":
+                setDaytype(event.currentTarget.name);
+                break;
+            case "mon":
+            case "tue":
+            case "wed":
+            case "thur":
+            case "fri":
+            case "sat":
+            case "sun":
+                setSelectedDays({ ...selectedDays, [event.currentTarget.name]: !selectedDays[event.currentTarget.name] ? "selected" : "" });
+                break;
+            default:
+                break;
+        }
+    };
+
     const closeModal = () => {
         toggleEditor();
     };
-
-    useEffect(() => {
-        console.log(editorOpen);
-    });
 
     return (
         <div
@@ -74,6 +91,16 @@ export default function Editor(props: any) {
                             <div className="text inputbox">
                                 <input name="text" type="text" placeholder="제목" required value={text} onChange={onChange} />
                             </div>
+                            <div>
+                                <div className="start selectBox">
+                                    <div>시작일</div>
+                                    <input type="date" name="startdate" value={startdate} onChange={onChange} />
+                                </div>
+                                <div className="end selectBox">
+                                    <div>종료일</div>
+                                    <input type="date" name="enddate" value={enddate} min={startdate} onChange={onChange} />
+                                </div>
+                            </div>
                             <div className="type selectBox">
                                 <div>반복</div>
                                 <select name="type" id="type" value={type} onChange={onChange}>
@@ -82,18 +109,6 @@ export default function Editor(props: any) {
                                     <option value="2">직접지정</option>
                                 </select>
                             </div>
-                            {type === "0" && (
-                                <div>
-                                    <div className="start selectBox">
-                                        <div>시작일</div>
-                                        <input type="date" name="startdate" value={startdate} onChange={onChange} />
-                                    </div>
-                                    <div className="end selectBox">
-                                        <div>종료일</div>
-                                        <input type="date" name="enddate" value={enddate} min={startdate} onChange={onChange} />
-                                    </div>
-                                </div>
-                            )}
                             {type === "1" && (
                                 <div>
                                     <div className="period selectBox">
@@ -107,40 +122,42 @@ export default function Editor(props: any) {
                                     </div>
                                     {period === "week" && (
                                         <div>
-                                            <div className="daytype selectBox">
-                                                <select name="daytype" id="daytype" value={daytype} onChange={onChange}>
-                                                    <option value="oneday">지정</option>
-                                                    <option value="duration">기간</option>
-                                                </select>
+                                            <div className={"daytype buttonBox " + daytype}>
+                                                <button type="button" className="oneday" name="oneday" onClick={onClick}>
+                                                    단일
+                                                </button>
+                                                <button type="button" className="duration" name="duration" onClick={onClick}>
+                                                    기간
+                                                </button>
                                             </div>
                                             {daytype === "oneday" && (
-                                                <div>
-                                                    <div className="mon">
-                                                        <input type="checkbox" name="mon" id="mon" />월
-                                                    </div>
-                                                    <div className="tue">
-                                                        <input type="checkbox" name="tue" id="tue" />화
-                                                    </div>
-                                                    <div className="wed">
-                                                        <input type="checkbox" name="wed" id="wed" />수
-                                                    </div>
-                                                    <div className="thur">
-                                                        <input type="checkbox" name="thur" id="thur" />목
-                                                    </div>
-                                                    <div className="fri">
-                                                        <input type="checkbox" name="fri" id="fri" />금
-                                                    </div>
-                                                    <div className="sat">
-                                                        <input type="checkbox" name="sat" id="sat" />토
-                                                    </div>
-                                                    <div className="sun">
-                                                        <input type="checkbox" name="sun" id="sun" />일
-                                                    </div>
+                                                <div className="days daysBox">
+                                                    <button type="button" className={"day mon " + selectedDays.mon} name="mon" onClick={onClick}>
+                                                        월
+                                                    </button>
+                                                    <button type="button" className={"day tue " + selectedDays.tue} name="tue" onClick={onClick}>
+                                                        화
+                                                    </button>
+                                                    <button type="button" className={"day wed " + selectedDays.wed} name="wed" onClick={onClick}>
+                                                        수
+                                                    </button>
+                                                    <button type="button" className={"day thur " + selectedDays.thur} name="thur" onClick={onClick}>
+                                                        목
+                                                    </button>
+                                                    <button type="button" className={"day fri " + selectedDays.fri} name="fri" onClick={onClick}>
+                                                        금
+                                                    </button>
+                                                    <button type="button" className={"day sat " + selectedDays.sat} name="sat" onClick={onClick}>
+                                                        토
+                                                    </button>
+                                                    <button type="button" className={"day sun " + selectedDays.sun} name="sun" onClick={onClick}>
+                                                        일
+                                                    </button>
                                                 </div>
                                             )}
                                             {daytype === "duration" && (
                                                 <div>
-                                                    <div className="start">
+                                                    <div className="start  selectBox">
                                                         <div>시작 요일</div>
                                                         <select name="startday" id="startday">
                                                             <option value="mon">월</option>
@@ -152,7 +169,7 @@ export default function Editor(props: any) {
                                                             <option value="sun">일</option>
                                                         </select>
                                                     </div>
-                                                    <div className="end">
+                                                    <div className="end  selectBox">
                                                         <div>종료 요일</div>
                                                         <select name="startday" id="startday">
                                                             <option value="mon">월</option>
