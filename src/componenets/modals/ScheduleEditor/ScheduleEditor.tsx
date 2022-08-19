@@ -106,7 +106,7 @@ export default function Editor(props: any) {
                             </div>
                             <div className="type selectBox">
                                 <div>반복</div>
-                                <select name="type" id="repeatingType" value={repeatingType} onChange={onChange}>
+                                <select name="repeatingType" id="repeatingType" value={repeatingType} onChange={onChange}>
                                     <option value="0">한번만</option>
                                     <option value="1">주기마다</option>
                                     <option value="2">직접지정</option>
@@ -148,7 +148,7 @@ export default function Editor(props: any) {
                                             {selectedDaysType === "oneday" && (
                                                 <div className="days daysBox">
                                                     {daysOfWeek.map(({ key, value }: { key: string; value: string }) => (
-                                                        <button type="button" className={"day " + key + " " + selectedDays[key]} name={key} onClick={onClick}>
+                                                        <button type="button" key={key} className={"day " + key + " " + selectedDays[key]} name={key} onClick={onClick}>
                                                             {value}
                                                         </button>
                                                     ))}
@@ -160,7 +160,9 @@ export default function Editor(props: any) {
                                                         <div>시작 요일</div>
                                                         <select name="startday" id="startday">
                                                             {daysOfWeek.map(({ key, value }) => (
-                                                                <option value={key}>{value}</option>
+                                                                <option key={key} value={key}>
+                                                                    {value}
+                                                                </option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -168,7 +170,9 @@ export default function Editor(props: any) {
                                                         <div>종료 요일</div>
                                                         <select name="endday" id="endday">
                                                             {daysOfWeek.map(({ key, value }) => (
-                                                                <option value={key}>{value}</option>
+                                                                <option key={key} value={key}>
+                                                                    {value}
+                                                                </option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -201,7 +205,9 @@ export default function Editor(props: any) {
                                                         <div>시작일</div>
                                                         <select name="startdate" id="startdate">
                                                             {datesOfMonth.map((date) => (
-                                                                <option value={date}>{date}</option>
+                                                                <option key={date} value={date}>
+                                                                    {date}
+                                                                </option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -209,7 +215,9 @@ export default function Editor(props: any) {
                                                         <div>종료일</div>
                                                         <select name="enddate" id="enddate">
                                                             {datesOfMonth.map((date) => (
-                                                                <option value={date}>{date}</option>
+                                                                <option key={date} value={date}>
+                                                                    {date}
+                                                                </option>
                                                             ))}
                                                         </select>
                                                     </div>
