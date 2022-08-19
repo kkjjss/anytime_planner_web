@@ -6,15 +6,25 @@ import { yyyymmdd } from "utils/dateFormat";
 export default function Editor(props: any) {
     const { editorOpen, toggleEditor, outModal } = props;
 
+    const _selectedDays: selectedDaysType = { mon: "", tue: "", wed: "", thur: "", fri: "", sat: "", sun: "" };
+
     const [text, setText] = useState("");
     const [type, setType] = useState("0");
     const [startdate, setStartdate] = useState(yyyymmdd(new Date()));
     const [enddate, setEnddate] = useState(yyyymmdd(new Date()));
     const [period, setPeriod] = useState("");
     const [daytype, setDaytype] = useState("oneday");
-    const [selectedDays, setSelectedDays] = useState({ mon: "", tue: "", wed: "", thur: "", fri: "", sat: "", sun: "" });
-    const [monday, setMonday] = useState("selected");
+    const [selectedDays, setSelectedDays] = useState(_selectedDays);
 
+    const daysOfWeek = [
+        { key: "mon", value: "월" },
+        { key: "tue", value: "화" },
+        { key: "wed", value: "수" },
+        { key: "thur", value: "목" },
+        { key: "fri", value: "금" },
+        { key: "sat", value: "토" },
+        { key: "sun", value: "일" },
+    ];
     const datesOfMonth = [...new Array(31)].map((_, i) => i + 1);
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -137,27 +147,11 @@ export default function Editor(props: any) {
                                             </div>
                                             {daytype === "oneday" && (
                                                 <div className="days daysBox">
-                                                    <button type="button" className={"day mon " + selectedDays.mon} name="mon" onClick={onClick}>
-                                                        월
-                                                    </button>
-                                                    <button type="button" className={"day tue " + selectedDays.tue} name="tue" onClick={onClick}>
-                                                        화
-                                                    </button>
-                                                    <button type="button" className={"day wed " + selectedDays.wed} name="wed" onClick={onClick}>
-                                                        수
-                                                    </button>
-                                                    <button type="button" className={"day thur " + selectedDays.thur} name="thur" onClick={onClick}>
-                                                        목
-                                                    </button>
-                                                    <button type="button" className={"day fri " + selectedDays.fri} name="fri" onClick={onClick}>
-                                                        금
-                                                    </button>
-                                                    <button type="button" className={"day sat " + selectedDays.sat} name="sat" onClick={onClick}>
-                                                        토
-                                                    </button>
-                                                    <button type="button" className={"day sun " + selectedDays.sun} name="sun" onClick={onClick}>
-                                                        일
-                                                    </button>
+                                                    {daysOfWeek.map(({ key, value }: { key: string; value: string }) => (
+                                                        <button type="button" className={"day " + key + " " + selectedDays[key]} name={key} onClick={onClick}>
+                                                            {value}
+                                                        </button>
+                                                    ))}
                                                 </div>
                                             )}
                                             {daytype === "duration" && (
@@ -249,3 +243,7 @@ export default function Editor(props: any) {
         </div>
     );
 }
+
+type selectedDaysType = {
+    [key: string]: string;
+};
