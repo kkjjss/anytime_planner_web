@@ -176,6 +176,29 @@
                     }
                 }
 
+                .dateBox {
+                    display: grid;
+                    grid-template-columns: repeat(7, 1fr);
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    margin-bottom: 15px;
+                    row-gap: 5px;
+                    justify-items: center;
+
+                    button.date {
+                        width: 37px;
+                        height: 37px;
+                        background-color: rgb(245, 245, 245);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        color: black;
+                        font-weight: 500;
+                        transition: 0.25s;
+                    }
+                }
+
                 button {
                     width: 322px;
                     height: 35px;
