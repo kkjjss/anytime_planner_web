@@ -18,7 +18,7 @@ function App() {
         });
     }, []);
 
-    return <div className="App">{init ? <Router isLoggedIn={isLoggedIn} /> : <div>"로그인 중"</div>}</div>;
+    return <div className="App">{init ? <Router isLoggedIn={isLoggedIn} /> : <></>}</div>;
 }
 
 export default App;
