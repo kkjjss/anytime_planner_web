@@ -159,25 +159,17 @@ export default function Editor(props: any) {
                                                     <div className="start  selectBox">
                                                         <div>시작 요일</div>
                                                         <select name="startday" id="startday">
-                                                            <option value="mon">월</option>
-                                                            <option value="tue">화</option>
-                                                            <option value="wed">수</option>
-                                                            <option value="thur">목</option>
-                                                            <option value="fri">금</option>
-                                                            <option value="sat">토</option>
-                                                            <option value="sun">일</option>
+                                                            {daysOfWeek.map(({ key, value }) => (
+                                                                <option value={key}>{value}</option>
+                                                            ))}
                                                         </select>
                                                     </div>
                                                     <div className="end  selectBox">
                                                         <div>종료 요일</div>
-                                                        <select name="startday" id="startday">
-                                                            <option value="mon">월</option>
-                                                            <option value="tue">화</option>
-                                                            <option value="wed">수</option>
-                                                            <option value="thur">목</option>
-                                                            <option value="fri">금</option>
-                                                            <option value="sat">토</option>
-                                                            <option value="sun">일</option>
+                                                        <select name="endday" id="endday">
+                                                            {daysOfWeek.map(({ key, value }) => (
+                                                                <option value={key}>{value}</option>
+                                                            ))}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -206,27 +198,19 @@ export default function Editor(props: any) {
                                             {daytype === "duration" && (
                                                 <div>
                                                     <div className="start  selectBox">
-                                                        <div>시작 요일</div>
-                                                        <select name="startday" id="startday">
-                                                            <option value="mon">월</option>
-                                                            <option value="tue">화</option>
-                                                            <option value="wed">수</option>
-                                                            <option value="thur">목</option>
-                                                            <option value="fri">금</option>
-                                                            <option value="sat">토</option>
-                                                            <option value="sun">일</option>
+                                                        <div>시작일</div>
+                                                        <select name="startdate" id="startdate">
+                                                            {datesOfMonth.map((date) => (
+                                                                <option value={date}>{date}</option>
+                                                            ))}
                                                         </select>
                                                     </div>
                                                     <div className="end  selectBox">
-                                                        <div>종료 요일</div>
-                                                        <select name="startday" id="startday">
-                                                            <option value="mon">월</option>
-                                                            <option value="tue">화</option>
-                                                            <option value="wed">수</option>
-                                                            <option value="thur">목</option>
-                                                            <option value="fri">금</option>
-                                                            <option value="sat">토</option>
-                                                            <option value="sun">일</option>
+                                                        <div>종료일</div>
+                                                        <select name="enddate" id="enddate">
+                                                            {datesOfMonth.map((date) => (
+                                                                <option value={date}>{date}</option>
+                                                            ))}
                                                         </select>
                                                     </div>
                                                 </div>
