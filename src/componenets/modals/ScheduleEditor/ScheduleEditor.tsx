@@ -8,12 +8,12 @@ export default function Editor(props: any) {
 
     const _selectedDays: selectedDaysType = { mon: "", tue: "", wed: "", thur: "", fri: "", sat: "", sun: "" };
 
-    const [text, setText] = useState("");
-    const [type, setType] = useState("0");
+    const [title, setTitle] = useState("");
+    const [repeatingType, setRepeatingType] = useState("0");
     const [startdate, setStartdate] = useState(yyyymmdd(new Date()));
     const [enddate, setEnddate] = useState(yyyymmdd(new Date()));
     const [period, setPeriod] = useState("");
-    const [daytype, setDaytype] = useState("oneday");
+    const [selectedDaysType, setSelectedDaysType] = useState("oneday");
     const [selectedDays, setSelectedDays] = useState(_selectedDays);
 
     const daysOfWeek = [
@@ -29,16 +29,16 @@ export default function Editor(props: any) {
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        databaseInstance.addDoc(databaseInstance.collection(database, "text"), { text: text }).then(() => alert("저장완료"));
+        databaseInstance.addDoc(databaseInstance.collection(database, "title"), { title: title }).then(() => alert("저장완료"));
     };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         switch (event.currentTarget.name) {
-            case "text":
-                setText(event.target.value);
+            case "title":
+                setTitle(event.target.value);
                 break;
-            case "type":
-                setType(event.target.value);
+            case "repeatingType":
+                setRepeatingType(event.target.value);
                 break;
             case "startdate":
                 setStartdate(event.target.value);
@@ -50,8 +50,8 @@ export default function Editor(props: any) {
             case "period":
                 setPeriod(event.target.value);
                 break;
-            case "daytype":
-                setDaytype(event.target.value);
+            case "selectedDaysType":
+                setSelectedDaysType(event.target.value);
                 break;
             default:
                 break;
@@ -62,7 +62,7 @@ export default function Editor(props: any) {
         switch (event.currentTarget.name) {
             case "oneday":
             case "duration":
-                setDaytype(event.currentTarget.name);
+                setSelectedDaysType(event.currentTarget.name);
                 break;
             case "mon":
             case "tue":
@@ -101,18 +101,18 @@ export default function Editor(props: any) {
                 <main>
                     <div className="signupbox">
                         <form onSubmit={onSubmit}>
-                            <div className="text inputbox">
-                                <input name="text" type="text" placeholder="제목" required value={text} onChange={onChange} />
+                            <div className="title inputbox">
+                                <input name="title" type="text" placeholder="제목" required value={title} onChange={onChange} />
                             </div>
                             <div className="type selectBox">
                                 <div>반복</div>
-                                <select name="type" id="type" value={type} onChange={onChange}>
+                                <select name="type" id="repeatingType" value={repeatingType} onChange={onChange}>
                                     <option value="0">한번만</option>
                                     <option value="1">주기마다</option>
                                     <option value="2">직접지정</option>
                                 </select>
                             </div>
-                            {type === "0" && (
+                            {repeatingType === "0" && (
                                 <div>
                                     <div className="start selectBox">
                                         <div>시작일</div>
@@ -124,7 +124,7 @@ export default function Editor(props: any) {
                                     </div>
                                 </div>
                             )}
-                            {type === "1" && (
+                            {repeatingType === "1" && (
                                 <div>
                                     <div className="period selectBox">
                                         <div>주기</div>
@@ -137,7 +137,7 @@ export default function Editor(props: any) {
                                     </div>
                                     {period === "week" && (
                                         <div>
-                                            <div className={"daytype buttonBox " + daytype}>
+                                            <div className={"selectedDaysType buttonBox " + selectedDaysType}>
                                                 <button type="button" className="oneday" name="oneday" onClick={onClick}>
                                                     단일
                                                 </button>
@@ -145,7 +145,7 @@ export default function Editor(props: any) {
                                                     기간
                                                 </button>
                                             </div>
-                                            {daytype === "oneday" && (
+                                            {selectedDaysType === "oneday" && (
                                                 <div className="days daysBox">
                                                     {daysOfWeek.map(({ key, value }: { key: string; value: string }) => (
                                                         <button type="button" className={"day " + key + " " + selectedDays[key]} name={key} onClick={onClick}>
@@ -154,7 +154,7 @@ export default function Editor(props: any) {
                                                     ))}
                                                 </div>
                                             )}
-                                            {daytype === "duration" && (
+                                            {selectedDaysType === "duration" && (
                                                 <div>
                                                     <div className="start  selectBox">
                                                         <div>시작 요일</div>
@@ -178,7 +178,7 @@ export default function Editor(props: any) {
                                     )}
                                     {period === "month" && (
                                         <div>
-                                            <div className={"daytype buttonBox " + daytype}>
+                                            <div className={"selectedDaysType buttonBox " + selectedDaysType}>
                                                 <button type="button" className="oneday" name="oneday" onClick={onClick}>
                                                     단일
                                                 </button>
@@ -186,7 +186,7 @@ export default function Editor(props: any) {
                                                     기간
                                                 </button>
                                             </div>
-                                            {daytype === "oneday" && (
+                                            {selectedDaysType === "oneday" && (
                                                 <div className="date dateBox">
                                                     {datesOfMonth.map((date) => (
                                                         <button type="button" key={date} className={"date " + date} name={"date_" + date}>
@@ -195,7 +195,7 @@ export default function Editor(props: any) {
                                                     ))}
                                                 </div>
                                             )}
-                                            {daytype === "duration" && (
+                                            {selectedDaysType === "duration" && (
                                                 <div>
                                                     <div className="start  selectBox">
                                                         <div>시작일</div>
