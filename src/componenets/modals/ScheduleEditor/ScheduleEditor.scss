@@ -197,6 +197,11 @@
                         font-weight: 500;
                         transition: 0.25s;
                     }
+
+                    button.date.selected {
+                        background-color: rgb(79, 115, 242);
+                        color: #fff;
+                    }
                 }
 
                 button {

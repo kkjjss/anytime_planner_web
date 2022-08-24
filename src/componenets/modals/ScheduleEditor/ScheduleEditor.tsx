@@ -6,16 +6,6 @@ import { yyyymmdd } from "utils/dateFormat";
 export default function Editor(props: any) {
     const { editorOpen, toggleEditor, outModal } = props;
 
-    const _selectedDays: selectedDaysType = { mon: "", tue: "", wed: "", thur: "", fri: "", sat: "", sun: "" };
-
-    const [title, setTitle] = useState("");
-    const [repeatingType, setRepeatingType] = useState("0");
-    const [startdate, setStartdate] = useState(yyyymmdd(new Date()));
-    const [enddate, setEnddate] = useState(yyyymmdd(new Date()));
-    const [period, setPeriod] = useState("");
-    const [selectedDaysType, setSelectedDaysType] = useState("oneday");
-    const [selectedDays, setSelectedDays] = useState(_selectedDays);
-
     const daysOfWeek = [
         { key: "mon", value: "월" },
         { key: "tue", value: "화" },
@@ -26,6 +16,18 @@ export default function Editor(props: any) {
         { key: "sun", value: "일" },
     ];
     const datesOfMonth = [...new Array(31)].map((_, i) => i + 1);
+
+    const _selectedDays: selectedDaysAndDateType = {};
+    const _selectedDates: selectedDaysAndDateType = {};
+
+    const [title, setTitle] = useState("");
+    const [repeatingType, setRepeatingType] = useState("0");
+    const [startdate, setStartdate] = useState(yyyymmdd(new Date()));
+    const [enddate, setEnddate] = useState(yyyymmdd(new Date()));
+    const [period, setPeriod] = useState("");
+    const [selectionType, setSelectionType] = useState("oneday");
+    const [selectedDays, setSelectedDays] = useState(_selectedDays);
+    const [selectedDates, setSelectedDates] = useState(_selectedDates);
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -50,8 +52,8 @@ export default function Editor(props: any) {
             case "period":
                 setPeriod(event.target.value);
                 break;
-            case "selectedDaysType":
-                setSelectedDaysType(event.target.value);
+            case "selectionType":
+                setSelectionType(event.target.value);
                 break;
             default:
                 break;
@@ -59,19 +61,17 @@ export default function Editor(props: any) {
     };
 
     const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const value = event.currentTarget.value;
         switch (event.currentTarget.name) {
-            case "oneday":
-            case "duration":
-                setSelectedDaysType(event.currentTarget.name);
+            case "selectionType":
+                setSelectionType(value);
                 break;
-            case "mon":
-            case "tue":
-            case "wed":
-            case "thur":
-            case "fri":
-            case "sat":
-            case "sun":
-                setSelectedDays({ ...selectedDays, [event.currentTarget.name]: !selectedDays[event.currentTarget.name] ? "selected" : "" });
+            case "day":
+                setSelectedDays({ ...selectedDays, [value]: !selectedDays[value] ? "selected" : "" });
+                break;
+            case "date":
+                setSelectedDates({ ...selectedDates, [value]: !selectedDates[value] ? "selected" : "" });
+                console.log(selectedDates);
                 break;
             default:
                 break;
@@ -137,24 +137,24 @@ export default function Editor(props: any) {
                                     </div>
                                     {period === "week" && (
                                         <div>
-                                            <div className={"selectedDaysType buttonBox " + selectedDaysType}>
-                                                <button type="button" className="oneday" name="oneday" onClick={onClick}>
+                                            <div className={"week selectionType buttonBox " + selectionType}>
+                                                <button type="button" className="week oneday" name="selectionType" value="oneday" onClick={onClick}>
                                                     단일
                                                 </button>
-                                                <button type="button" className="duration" name="duration" onClick={onClick}>
+                                                <button type="button" className="week duration" name="selectionType" value="duration" onClick={onClick}>
                                                     기간
                                                 </button>
                                             </div>
-                                            {selectedDaysType === "oneday" && (
+                                            {selectionType === "oneday" && (
                                                 <div className="days daysBox">
                                                     {daysOfWeek.map(({ key, value }: { key: string; value: string }) => (
-                                                        <button type="button" key={key} className={"day " + key + " " + selectedDays[key]} name={key} onClick={onClick}>
+                                                        <button type="button" key={key} className={"day " + key + " " + selectedDays[key]} name="day" value={key} onClick={onClick}>
                                                             {value}
                                                         </button>
                                                     ))}
                                                 </div>
                                             )}
-                                            {selectedDaysType === "duration" && (
+                                            {selectionType === "duration" && (
                                                 <div>
                                                     <div className="start  selectBox">
                                                         <div>시작 요일</div>
@@ -182,24 +182,24 @@ export default function Editor(props: any) {
                                     )}
                                     {period === "month" && (
                                         <div>
-                                            <div className={"selectedDaysType buttonBox " + selectedDaysType}>
-                                                <button type="button" className="oneday" name="oneday" onClick={onClick}>
+                                            <div className={"month selectionType buttonBox " + selectionType}>
+                                                <button type="button" className="month oneday" name="selectionType" value="oneday" onClick={onClick}>
                                                     단일
                                                 </button>
-                                                <button type="button" className="duration" name="duration" onClick={onClick}>
+                                                <button type="button" className="month duration" name="selectionType" value="month" onClick={onClick}>
                                                     기간
                                                 </button>
                                             </div>
-                                            {selectedDaysType === "oneday" && (
+                                            {selectionType === "oneday" && (
                                                 <div className="date dateBox">
                                                     {datesOfMonth.map((date) => (
-                                                        <button type="button" key={date} className={"date " + date} name={"date_" + date}>
+                                                        <button type="button" key={date} className={"date " + date + " " + selectedDates[date]} name="date" value={date} onClick={onClick}>
                                                             {date}
                                                         </button>
                                                     ))}
                                                 </div>
                                             )}
-                                            {selectedDaysType === "duration" && (
+                                            {selectionType === "duration" && (
                                                 <div>
                                                     <div className="start  selectBox">
                                                         <div>시작일</div>
@@ -236,6 +236,6 @@ export default function Editor(props: any) {
     );
 }
 
-type selectedDaysType = {
+type selectedDaysAndDateType = {
     [key: string]: string;
 };
