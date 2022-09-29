@@ -50,16 +50,13 @@
                 margin-top: 20px;
                 margin-bottom: 20px;
 
-                .title {
+                .inputbox {
+                    position: relative;
                     font-size: 15pt;
                     font-weight: 700;
                     color: #1e1e1e;
                     margin-bottom: 20px;
                     text-align: center;
-                }
-
-                .inputbox {
-                    position: relative;
 
                     input {
                         background-color: rgb(245, 245, 245);
@@ -75,6 +72,36 @@
 
                     input:focus {
                         border: 1px solid rgba(0, 0, 255, 0.8);
+                    }
+                }
+
+                .textBox {
+                    display: flex;
+                    height: 40px;
+                    align-items: center;
+                    margin-bottom: 15px;
+
+                    div:first-child {
+                        width: 100px;
+                        font-size: 17px;
+                    }
+
+                    input {
+                        background-color: rgb(245, 245, 245);
+                        border: 1px solid gray;
+                        border-radius: 5px;
+                        outline: none;
+                        width: 155px;
+                        height: 36px;
+                        font-size: 15px;
+                        transition: 0.25s;
+                        text-align: right;
+                        padding-right: 5px;
+                    }
+
+                    div:last-child {
+                        width: 56px;
+                        text-align: right;
                     }
                 }
 
@@ -111,96 +138,6 @@
 
                     select:focus {
                         border: 1px solid rgba(0, 0, 255, 0.8);
-                    }
-                }
-
-                .buttonBox {
-                    display: flex;
-                    height: 40px;
-                    margin-bottom: 15px;
-
-                    button.oneday,
-                    button.duration {
-                        border: 1px solid gray;
-                        font-size: 15px;
-                        color: black;
-                        font-weight: 500;
-                        transition: 0.25s;
-                    }
-
-                    button:first-child {
-                        width: 50%;
-                        background-color: rgb(245, 245, 245);
-                        border-radius: 5px 0px 0px 5px;
-                        border-right: 0px;
-                    }
-
-                    button:last-child {
-                        width: 50%;
-                        background-color: rgb(245, 245, 245);
-                        border-radius: 0px 5px 5px 0px;
-                    }
-                }
-
-                .buttonBox.oneday > button.oneday,
-                .buttonBox.duration > button.duration {
-                    background-color: rgb(79, 115, 242);
-                    color: #fff;
-                }
-
-                .daysBox {
-                    display: flex;
-                    justify-content: space-between;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    height: 40px;
-                    margin-bottom: 15px;
-                    align-items: center;
-
-                    button.day {
-                        width: 37px;
-                        height: 37px;
-                        background-color: rgb(245, 245, 245);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border-radius: 50%;
-                        color: black;
-                        font-weight: 500;
-                        transition: 0.25s;
-                    }
-
-                    button.day.selected {
-                        background-color: rgb(79, 115, 242);
-                        color: #fff;
-                    }
-                }
-
-                .dateBox {
-                    display: grid;
-                    grid-template-columns: repeat(7, 1fr);
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    margin-bottom: 15px;
-                    row-gap: 5px;
-                    justify-items: center;
-
-                    button.date {
-                        width: 37px;
-                        height: 37px;
-                        background-color: rgb(245, 245, 245);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border-radius: 50%;
-                        color: black;
-                        font-weight: 500;
-                        transition: 0.25s;
-                    }
-
-                    button.date.selected {
-                        background-color: rgb(79, 115, 242);
-                        color: #fff;
                     }
                 }
 

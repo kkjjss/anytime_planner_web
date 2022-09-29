@@ -1,79 +1,78 @@
-import React, { useEffect, useState } from "react";
+import React, { useReducer } from "react";
 import "./ScheduleEditor.scss";
 import { databaseInstance, database } from "firebaseConfig";
 import { yyyymmdd } from "utils/dateFormat";
 
-export default function Editor(props: any) {
-    const { editorOpen, toggleEditor, outModal } = props;
+interface initalState {
+    title: string;
+    repeatingType: "once" | "repeat";
+    startdate: string;
+    enddate: string;
+    cycle: string;
+    period: string;
+}
 
-    const daysOfWeek = [
-        { key: "mon", value: "월" },
-        { key: "tue", value: "화" },
-        { key: "wed", value: "수" },
-        { key: "thur", value: "목" },
-        { key: "fri", value: "금" },
-        { key: "sat", value: "토" },
-        { key: "sun", value: "일" },
-    ];
-    const datesOfMonth = [...new Array(31)].map((_, i) => i + 1);
+const initialState: initalState = {
+    title: "",
+    repeatingType: "once",
+    startdate: yyyymmdd(new Date()),
+    enddate: yyyymmdd(new Date()),
+    cycle: "",
+    period: "",
+};
 
-    const _selectedDays: selectedDaysAndDateType = {};
-    const _selectedDates: selectedDaysAndDateType = {};
+const reducer = (state: initalState, action: any) => {
+    switch (action.type) {
+        case "SET_STATE":
+            return {
+                ...state,
+                [action.name]: action.value,
+            };
+        case "SET_REPEATING_TYPE":
+            return {
+                ...initialState,
+                [action.name]: action.value,
+                title: state.title,
+            };
+        default:
+            return state;
+    }
+};
 
-    const [title, setTitle] = useState("");
-    const [repeatingType, setRepeatingType] = useState("0");
-    const [startdate, setStartdate] = useState(yyyymmdd(new Date()));
-    const [enddate, setEnddate] = useState(yyyymmdd(new Date()));
-    const [period, setPeriod] = useState("");
-    const [selectionType, setSelectionType] = useState("oneday");
-    const [selectedDays, setSelectedDays] = useState(_selectedDays);
-    const [selectedDates, setSelectedDates] = useState(_selectedDates);
+export default function Editor({ editorOpen, toggleEditor, outModal }: any) {
+    const [state, dispatch] = useReducer(reducer, initialState);
 
-    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        databaseInstance.addDoc(databaseInstance.collection(database, "title"), { title: title }).then(() => alert("저장완료"));
+        const scheduleData = state.repeatingType === "once" ? { title: state.title, repeatingType: state.repeatingType, startdate: state.startdate, enddate: state.enddate } : state;
+        await databaseInstance.addDoc(databaseInstance.collection(database, "schedule"), scheduleData);
+        alert("성공!");
     };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         switch (event.currentTarget.name) {
-            case "title":
-                setTitle(event.target.value);
-                break;
             case "repeatingType":
-                setRepeatingType(event.target.value);
+                dispatch({ type: "SET_REPEATING_TYPE", name: event.currentTarget.name, value: event.target.value });
                 break;
             case "startdate":
-                setStartdate(event.target.value);
-                if (new Date(enddate) < new Date(event.target.value)) setEnddate(event.target.value);
+                dispatch({ type: "SET_STATE", name: event.currentTarget.name, value: event.target.value });
+                if (new Date(state.enddate) < new Date(event.target.value)) dispatch({ type: "SET_STATE", name: "enddate", value: event.target.value });
                 break;
-            case "enddate":
-                setEnddate(event.target.value);
+            case "cycle":
+                let cycleValue = Number(event.target.value);
+                console.log(Number(event.target.value));
+                if (cycleValue < 1) cycleValue = 1;
+                dispatch({ type: "SET_STATE", name: event.currentTarget.name, value: cycleValue });
                 break;
             case "period":
-                setPeriod(event.target.value);
-                break;
-            case "selectionType":
-                setSelectionType(event.target.value);
-                break;
-            default:
-                break;
-        }
-    };
-
-    const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        const value = event.currentTarget.value;
-        switch (event.currentTarget.name) {
-            case "selectionType":
-                setSelectionType(value);
-                break;
-            case "day":
-                setSelectedDays({ ...selectedDays, [value]: !selectedDays[value] ? "selected" : "" });
-                break;
-            case "date":
-                setSelectedDates({ ...selectedDates, [value]: !selectedDates[value] ? "selected" : "" });
-                console.log(selectedDates);
+                let periodValue = Number(event.target.value);
+                console.log(Number(event.target.value));
+                if (periodValue < 1) periodValue = 1;
+                else if (periodValue > Number(state.cycle)) periodValue = Number(state.cycle);
+                dispatch({ type: "SET_STATE", name: event.currentTarget.name, value: periodValue });
                 break;
             default:
+                dispatch({ type: "SET_STATE", name: event.currentTarget.name, value: event.target.value });
                 break;
         }
     };
@@ -102,129 +101,47 @@ export default function Editor(props: any) {
                     <div className="signupbox">
                         <form onSubmit={onSubmit}>
                             <div className="title inputbox">
-                                <input name="title" type="text" placeholder="제목" required value={title} onChange={onChange} />
+                                <input name="title" type="text" placeholder="제목" required value={state.title} onChange={onChange} />
                             </div>
                             <div className="type selectBox">
                                 <div>반복</div>
-                                <select name="repeatingType" id="repeatingType" value={repeatingType} onChange={onChange}>
-                                    <option value="0">한번만</option>
-                                    <option value="1">주기마다</option>
-                                    <option value="2">직접지정</option>
+                                <select name="repeatingType" id="repeatingType" value={state.repeatingType} onChange={onChange}>
+                                    <option value="once">한번만</option>
+                                    <option value="repeat">주기마다</option>
                                 </select>
                             </div>
-                            {repeatingType === "0" && (
+                            {state.repeatingType === "once" && (
                                 <div>
                                     <div className="start selectBox">
                                         <div>시작일</div>
-                                        <input type="date" name="startdate" value={startdate} onChange={onChange} />
+                                        <input type="date" name="startdate" value={state.startdate} onChange={onChange} />
                                     </div>
                                     <div className="end selectBox">
                                         <div>종료일</div>
-                                        <input type="date" name="enddate" value={enddate} min={startdate} onChange={onChange} />
+                                        <input type="date" name="enddate" value={state.enddate} min={state.startdate} onChange={onChange} />
                                     </div>
                                 </div>
                             )}
-                            {repeatingType === "1" && (
+                            {state.repeatingType === "repeat" && (
                                 <div>
-                                    <div className="period selectBox">
+                                    <div className="cycle textBox">
                                         <div>주기</div>
-                                        <select name="period" value={period} onChange={onChange}>
-                                            <option value="day">매일</option>
-                                            <option value="week">매주</option>
-                                            <option value="month">매달</option>
-                                            <option value="year">매년</option>
-                                        </select>
+                                        <input type="number" name="cycle" value={state.cycle} onChange={onChange} />
+                                        <div>일 마다</div>
                                     </div>
-                                    {period === "week" && (
-                                        <div>
-                                            <div className={"week selectionType buttonBox " + selectionType}>
-                                                <button type="button" className="week oneday" name="selectionType" value="oneday" onClick={onClick}>
-                                                    단일
-                                                </button>
-                                                <button type="button" className="week duration" name="selectionType" value="duration" onClick={onClick}>
-                                                    기간
-                                                </button>
-                                            </div>
-                                            {selectionType === "oneday" && (
-                                                <div className="days daysBox">
-                                                    {daysOfWeek.map(({ key, value }: { key: string; value: string }) => (
-                                                        <button type="button" key={key} className={"day " + key + " " + selectedDays[key]} name="day" value={key} onClick={onClick}>
-                                                            {value}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            )}
-                                            {selectionType === "duration" && (
-                                                <div>
-                                                    <div className="start  selectBox">
-                                                        <div>시작 요일</div>
-                                                        <select name="startday" id="startday">
-                                                            {daysOfWeek.map(({ key, value }) => (
-                                                                <option key={key} value={key}>
-                                                                    {value}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                    <div className="end  selectBox">
-                                                        <div>종료 요일</div>
-                                                        <select name="endday" id="endday">
-                                                            {daysOfWeek.map(({ key, value }) => (
-                                                                <option key={key} value={key}>
-                                                                    {value}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                    {period === "month" && (
-                                        <div>
-                                            <div className={"month selectionType buttonBox " + selectionType}>
-                                                <button type="button" className="month oneday" name="selectionType" value="oneday" onClick={onClick}>
-                                                    단일
-                                                </button>
-                                                <button type="button" className="month duration" name="selectionType" value="month" onClick={onClick}>
-                                                    기간
-                                                </button>
-                                            </div>
-                                            {selectionType === "oneday" && (
-                                                <div className="date dateBox">
-                                                    {datesOfMonth.map((date) => (
-                                                        <button type="button" key={date} className={"date " + date + " " + selectedDates[date]} name="date" value={date} onClick={onClick}>
-                                                            {date}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            )}
-                                            {selectionType === "duration" && (
-                                                <div>
-                                                    <div className="start  selectBox">
-                                                        <div>시작일</div>
-                                                        <select name="startdate" id="startdate">
-                                                            {datesOfMonth.map((date) => (
-                                                                <option key={date} value={date}>
-                                                                    {date}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                    <div className="end  selectBox">
-                                                        <div>종료일</div>
-                                                        <select name="enddate" id="enddate">
-                                                            {datesOfMonth.map((date) => (
-                                                                <option key={date} value={date}>
-                                                                    {date}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
+                                    <div className="period textBox">
+                                        <div>기간</div>
+                                        <input type="number" name="period" value={state.period} onChange={onChange} />
+                                        <div>일 동안</div>
+                                    </div>
+                                    <div className="start selectBox">
+                                        <div>반복 시작일</div>
+                                        <input type="date" name="startdate" value={state.startdate} onChange={onChange} />
+                                    </div>
+                                    <div className="end selectBox">
+                                        <div>반복 종료일</div>
+                                        <input type="date" name="enddate" value={state.enddate} min={state.startdate} onChange={onChange} />
+                                    </div>
                                 </div>
                             )}
                             <input type="submit" value="send" />
@@ -235,7 +152,3 @@ export default function Editor(props: any) {
         </div>
     );
 }
-
-type selectedDaysAndDateType = {
-    [key: string]: string;
-};
