@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import "./ScheduleEditor.scss";
+import "./ScheduleForm.scss";
 import { databaseInstance, database } from "firebaseConfig";
 import { yyyymmdd } from "utils/dateFormat";
 
@@ -45,8 +45,13 @@ export default function Editor({ editorOpen, toggleEditor, outModal }: any) {
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const scheduleData = state.repeatingType === "once" ? { title: state.title, repeatingType: state.repeatingType, startdate: state.startdate, enddate: state.enddate } : state;
-        await databaseInstance.addDoc(databaseInstance.collection(database, "schedule"), scheduleData);
-        alert("성공!");
+        try {
+            await databaseInstance.addDoc(databaseInstance.collection(database, "schedules"), scheduleData);
+            alert("성공!");
+            closeModal();
+        } catch (error) {
+            console.error("Database Insert Error", error);
+        }
     };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {

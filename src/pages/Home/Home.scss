@@ -1,6 +1,44 @@
 .Home {
-    display: flex;
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+        flex-direction: column;
 
-    button {
+        .text {
+            color: #fff;
+            text-align: center;
+            font-size: 20pt;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        button {
+            width: 322px;
+            height: 35px;
+            font-size: 15px;
+            font-weight: 700;
+            border: 0px;
+            background-color: #fff;
+            border-radius: 5px;
+            color: #1e1e1e;
+            transition: 0.2s;
+
+            input {
+                border: none;
+                background-color: #1e1e1e;
+                font-size: 15px;
+                font-weight: 700;
+                color: white;
+            }
+
+            &:hover {
+                transform: scale(1.02);
+            }
+
+            &:active {
+                transform: scale(0.98);
+            }
+        }
     }
 }
